@@ -20,3 +20,5 @@ gitignore
 # Данные
 data/rus_news_data/*.csv
 *.zip
+
+artifacts/

@@ -1,2 +1,10 @@
 defaults:
   - data_load: data_load
+  - data: default
+  - model: lstm
+  - train: default
+  - preprocess: text
+  - _self_
+mlflow:
+  tracking_uri: http://127.0.0.1:8080
+  experiment_name: news-classification
