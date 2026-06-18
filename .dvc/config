@@ -1,6 +1,6 @@
 [core]
-    remote = data
-['remote "data"']
-    url = /home/user/dvc-storage/data
-['remote "models"']
-    url = /home/user/dvc-storage/models
+    remote = data_storage
+['remote "data_storage"']
+    url = cache_local/data
+['remote "models_storage"']
+    url = cache_local/models

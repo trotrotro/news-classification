@@ -8,3 +8,15 @@ wheels/
 
 # Virtual environments
 .venv
+
+gitignore
+# DVC
+.dvc/
+.dvc/cache/
+.dvc/cache_local/
+.dvc/tmp/
+.dvc/updates
+
+# Данные
+data/rus_news_data/*.csv
+*.zip
