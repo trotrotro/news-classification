@@ -1,0 +1,5 @@
+train_data_path: ../../data/ru_news_data/ru_news_train.csv
+test_data_path: ../../data/ru_news_data/ru_news_test.csv
+val_data_path: ../../data/ru_news_data/ru_news_val.csv
+data_path: ../../data
+url: https://drive.google.com/file/d/1P400Hq4axtPHkoRhZ11MhkE1CyIem_kS/view?usp=sharing
