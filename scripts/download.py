@@ -21,6 +21,11 @@ def main(config: DictConfig) -> None:
     with zipfile.ZipFile(zip_filename, "r") as zip_ref:
         zip_ref.extractall(output_dir)
 
+    macosx_path = os.path.join(output_dir, "__MACOSX")
+    if os.path.exists(macosx_path):
+        print("Removing __MACOSX folder...")
+        shutil.rmtree(macosx_path)
+
     print("Deleting zip file...")
     os.remove(zip_filename)
     print(f"Extracted contents saved to: {output_dir}")
