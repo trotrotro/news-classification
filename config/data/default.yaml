@@ -1,8 +1,0 @@
-train_path: data/rus_news_data/train.csv
-val_path: data/rus_news_data/val.csv
-test_path: data/rus_news_data/test.csv
-
-batch_size: 64
-num_workers: 4
-max_length: 256
-min_freq: 2

@@ -8,8 +8,9 @@ wheels/
 
 # Virtual environments
 .venv
+venv/
+env/
 
-gitignore
 # DVC
 .dvc/
 .dvc/cache/
@@ -17,8 +18,44 @@ gitignore
 .dvc/tmp/
 .dvc/updates
 
-# Данные
-data/rus_news_data/*.csv
-*.zip
+# Данные и датасеты
+data/
+*.csv
+*.parquet
+*.jsonl
+*.tsv
 
+# Модели и чекпоинты
+*.ckpt
+*.pth
+*.h5
+*.pb
+*.pt
+*.pkl
+*.joblib
+*.pickle
+checkpoints/
+models/
 artifacts/
+
+# Архивы
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# IDE и OS
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Логи
+*.log
+logs/
+
+# MLflow
+mlflow.db
+mlruns/

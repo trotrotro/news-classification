@@ -1,6 +1,0 @@
-[core]
-    remote = data_storage
-['remote "data_storage"']
-    url = cache_local/data
-['remote "models_storage"']
-    url = cache_local/models
