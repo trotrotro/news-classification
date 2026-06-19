@@ -1,0 +1,37 @@
+data_load:
+  train_data_path: data/ru_news_data/ru_news_train.csv
+  test_data_path: data/ru_news_data/ru_news_test.csv
+  val_data_path: data/ru_news_data/ru_news_val.csv
+  data_path: data
+  url: https://drive.google.com/file/d/1P400Hq4axtPHkoRhZ11MhkE1CyIem_kS/view?usp=sharing
+data:
+  train_path: data/rus_news_data/train.csv
+  val_path: data/rus_news_data/val.csv
+  test_path: data/rus_news_data/test.csv
+  batch_size: 64
+  num_workers: 4
+  max_length: 256
+  min_freq: 2
+model:
+  embed_dim: 128
+  hidden_dim: 256
+  num_layers: 3
+  dropout: 0.3
+  lr: 0.001
+  weight_decay: 0.0001
+  max_epochs: 15
+  early_stopping_patience: 5
+  gradient_clip_val: 1.0
+train:
+  batch_size: 64
+  max_epochs: 15
+  lr: 0.001
+  max_length: 256
+  num_workers: 0
+preprocess:
+  lowercase: true
+  remove_punct: true
+  min_freq: 2
+mlflow:
+  tracking_uri: http://127.0.0.1:8080
+  experiment_name: news-classification

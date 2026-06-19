@@ -5,13 +5,12 @@ import hydra
 import mlflow
 import pytorch_lightning as pl
 import torch
+from pytorch_lightning.callbacks import EarlyStopping, LearningRateMonitor
 from pytorch_lightning.loggers import MLFlowLogger
 
 from models.lstm import LSTMClassifier
 from scripts.modules.data_module import NewsDataModule
 from scripts.modules.plot_callback import PlotCallback
-
-mlflow.pytorch.autolog()
 
 
 @hydra.main(version_base=None, config_path="config", config_name="config")
@@ -23,6 +22,7 @@ def main(cfg):
     model = LSTMClassifier(
         vocab_size=dm.vocab_size,
         num_classes=dm.num_classes,
+        class_weights=dm.class_weights,
         embed_dim=cfg.model.embed_dim,
         hidden_dim=cfg.model.hidden_dim,
         lr=cfg.train.lr,
@@ -42,11 +42,21 @@ def main(cfg):
 
     mlf_logger.experiment.log_param(mlf_logger.run_id, "git_commit", commit_id)
 
+    early_stop = EarlyStopping(
+        monitor="val_f1",
+        mode="max",
+        patience=5,
+    )
+
+    lr_monitor = LearningRateMonitor(logging_interval="epoch")
+
     trainer = pl.Trainer(
         max_epochs=cfg.train.max_epochs,
+        gradient_clip_val=1.0,
         accelerator="auto",
         logger=mlf_logger,
         log_every_n_steps=10,
+        callbacks=[early_stop, lr_monitor],
     )
 
     trainer.fit(model, dm)

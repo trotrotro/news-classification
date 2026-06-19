@@ -1,3 +1,6 @@
+import json
+import os
+
 import pandas as pd
 import pytorch_lightning as pl
 import torch
@@ -21,7 +24,11 @@ class NewsDataModule(pl.LightningDataModule):
         self.max_length = cfg.train.max_length
         self.min_freq = cfg.preprocess.min_freq
 
+        self.artifacts_dir = getattr(cfg.paths, "artifacts_dir", "artifacts")
+        os.makedirs(self.artifacts_dir, exist_ok=True)
+
     def setup(self, stage=None):
+
         self.train_df = pd.read_csv(self.train_path)
         self.val_df = pd.read_csv(self.val_path)
         self.test_df = pd.read_csv(self.test_path)
@@ -34,34 +41,41 @@ class NewsDataModule(pl.LightningDataModule):
         labels = sorted(self.train_df["label"].unique())
 
         self.label2idx = {label: i for i, label in enumerate(labels)}
-
         self.idx2label = {i: label for label, i in self.label2idx.items()}
 
+        # save mapping (CRITICAL)
+        with open(os.path.join(self.artifacts_dir, "label2idx.json"), "w") as f:
+            json.dump(self.label2idx, f, ensure_ascii=False)
+
+        with open(os.path.join(self.artifacts_dir, "idx2label.json"), "w") as f:
+            json.dump(self.idx2label, f, ensure_ascii=False)
+
+        # apply mapping
         for df in [self.train_df, self.val_df, self.test_df]:
             df["label"] = df["label"].map(self.label2idx)
 
-        for df in [self.train_df, self.val_df, self.test_df]:
-            assert not df["label"].isna().any()
+        assert not self.train_df["label"].isna().any()
 
         self.word2idx, self.idx2word = build_vocab(
             self.train_df["text"], min_freq=self.min_freq
         )
 
+        # save vocab (CRITICAL)
+        with open(os.path.join(self.artifacts_dir, "word2idx.json"), "w") as f:
+            json.dump(self.word2idx, f, ensure_ascii=False)
+
         self.train_dataset = NewsDataset(self.train_df, self.word2idx, self.max_length)
-
         self.val_dataset = NewsDataset(self.val_df, self.word2idx, self.max_length)
-
         self.test_dataset = NewsDataset(self.test_df, self.word2idx, self.max_length)
 
         self.vocab_size = len(self.word2idx)
+        self.num_classes = len(self.label2idx)
 
         class_counts = self.train_df["label"].value_counts().sort_index()
-
         weights = 1.0 / torch.tensor(class_counts.values, dtype=torch.float)
         weights = weights / weights.sum() * len(class_counts)
 
         self.class_weights = weights
-        self.num_classes = len(self.label2idx)
 
     def train_dataloader(self):
         return DataLoader(

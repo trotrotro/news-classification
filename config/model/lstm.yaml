@@ -1,4 +1,11 @@
 embed_dim: 128
 hidden_dim: 256
-num_layers: 1
+num_layers: 3
 dropout: 0.3
+
+lr: 1e-3
+weight_decay: 1e-4
+
+max_epochs: 15
+early_stopping_patience: 5
+gradient_clip_val: 1.0
