@@ -2,3 +2,4 @@ batch_size: 64
 max_epochs: 5
 lr: 0.001
 max_length: 256
+num_workers: 0

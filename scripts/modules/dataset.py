@@ -11,15 +11,15 @@ class NewsDataset(Dataset):
     def encode(self, text):
         tokens = text.split()
 
-        ids = [self.word2idx.get(t, self.word2idx["<UNK>"]) for t in tokens]
+        ids = [self.word2idx.get(token, self.word2idx["<UNK>"]) for token in tokens]
 
-        # padding / truncation
-        if len(ids) < self.max_length:
-            ids += [self.word2idx["<PAD>"]] * (self.max_length - len(ids))
-        else:
-            ids = ids[: self.max_length]
+        ids = ids[: self.max_length]
 
-        return torch.tensor(ids)
+        pad_len = self.max_length - len(ids)
+        if pad_len > 0:
+            ids += [self.word2idx["<PAD>"]] * pad_len
+
+        return torch.tensor(ids, dtype=torch.long)
 
     def __len__(self):
         return len(self.df)
@@ -28,6 +28,6 @@ class NewsDataset(Dataset):
         row = self.df.iloc[idx]
 
         x = self.encode(row["text"])
-        y = torch.tensor(row["label"])
+        y = torch.tensor(row["label"], dtype=torch.long)
 
         return x, y
