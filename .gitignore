@@ -5,6 +5,7 @@ build/
 dist/
 wheels/
 *.egg-info
+outputs/
 
 # Virtual environments
 .venv
@@ -37,6 +38,9 @@ data/
 checkpoints/
 models/
 artifacts/
+mlflow.db
+mlartifacts/
+1/
 
 # Архивы
 *.zip
@@ -59,3 +63,5 @@ logs/
 # MLflow
 mlflow.db
 mlruns/
+/1
+/artifacts
