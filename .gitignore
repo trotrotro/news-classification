@@ -13,7 +13,6 @@ venv/
 env/
 
 # DVC
-.dvc/
 .dvc/cache/
 .dvc/cache_local/
 .dvc/tmp/
@@ -36,7 +35,6 @@ data/
 *.joblib
 *.pickle
 checkpoints/
-models/
 artifacts/
 mlflow.db
 mlartifacts/
