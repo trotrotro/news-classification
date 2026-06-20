@@ -1,18 +1,26 @@
-import os
+import subprocess
+from pathlib import Path
 
 import git
 import hydra
 import pytorch_lightning as pl
 import torch
-from pytorch_lightning.callbacks import EarlyStopping, LearningRateMonitor
+from pytorch_lightning.callbacks import (
+    EarlyStopping,
+    LearningRateMonitor,
+    ModelCheckpoint,
+)
 from pytorch_lightning.loggers import MLFlowLogger
 
-from scripts.modules.data_module import NewsDataModule
-from scripts.modules.lstm import LSTMClassifier
+from news_classifier.data.data_module import NewsDataModule
+from news_classifier.data.download_data import download_data, ensure_data
+from news_classifier.models.lstm import LSTMClassifier
 
 
-@hydra.main(version_base=None, config_path="config", config_name="config")
+@hydra.main(version_base=None, config_path="../config", config_name="config")
 def main(cfg):
+
+    ensure_data()
 
     dm = NewsDataModule(cfg)
     dm.setup()
@@ -48,18 +56,36 @@ def main(cfg):
 
     lr_monitor = LearningRateMonitor(logging_interval="epoch")
 
+    checkpoint_callback = ModelCheckpoint(
+        dirpath="models",
+        filename="best-{epoch:02d}-{val_f1:.4f}",
+        monitor="val_f1",
+        mode="max",
+        save_top_k=1,
+    )
+
     trainer = pl.Trainer(
         max_epochs=cfg.train.max_epochs,
         gradient_clip_val=1.0,
         accelerator="auto",
         logger=mlf_logger,
         log_every_n_steps=10,
-        callbacks=[early_stop, lr_monitor],
+        callbacks=[early_stop, lr_monitor, checkpoint_callback],
     )
 
     trainer.fit(model, dm)
 
-    os.makedirs("plots", exist_ok=True)
+    metrics = trainer.callback_metrics
+
+    for name, value in metrics.items():
+        if torch.is_tensor(value):
+            value = value.item()
+
+        mlf_logger.experiment.log_metric(
+            mlf_logger.run_id,
+            name,
+            value,
+        )
 
     print("Logged metrics:", trainer.logged_metrics)
     print("Callback metrics:", trainer.callback_metrics)

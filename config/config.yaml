@@ -2,8 +2,11 @@ defaults:
   - data_load: data_load
   - data: default
   - model: lstm
+  - artifacts: default
+  - checkpoint: default
   - train: default
   - preprocess: text
+  - infer: default
   - _self_
 mlflow:
   tracking_uri: http://127.0.0.1:8080

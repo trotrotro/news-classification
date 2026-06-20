@@ -1,0 +1,8 @@
+url: https://drive.google.com/uc?id=1BOQASa65TiWCpIOMh10VpecZcvRmzvHn
+
+checkpoint_path: models/best.ckpt
+
+embed_dim: 128
+hidden_dim: 256
+num_layers: 3
+dropout: 0.3

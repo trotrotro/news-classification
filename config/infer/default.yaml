@@ -1,0 +1,4 @@
+data_path: data/rus_news_data/test.csv
+predictions_path: predictions.csv
+text: null
+interactive: false
