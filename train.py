@@ -2,15 +2,13 @@ import os
 
 import git
 import hydra
-import mlflow
 import pytorch_lightning as pl
 import torch
 from pytorch_lightning.callbacks import EarlyStopping, LearningRateMonitor
 from pytorch_lightning.loggers import MLFlowLogger
 
-from models.lstm import LSTMClassifier
 from scripts.modules.data_module import NewsDataModule
-from scripts.modules.plot_callback import PlotCallback
+from scripts.modules.lstm import LSTMClassifier
 
 
 @hydra.main(version_base=None, config_path="config", config_name="config")
@@ -62,8 +60,6 @@ def main(cfg):
     trainer.fit(model, dm)
 
     os.makedirs("plots", exist_ok=True)
-
-    metrics = trainer.callback_metrics
 
     print("Logged metrics:", trainer.logged_metrics)
     print("Callback metrics:", trainer.callback_metrics)
