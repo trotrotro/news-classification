@@ -115,7 +115,7 @@ uv run python -m news_classifier.infer infer.interactive=true
 uv run python -m news_classifier.deployment.export_onnx
 ```
 
-Модель будет кспортирована в файл deployment/model.onnx
+Модель будет экспортирована в файл deployment/model.onnx
 
 
 
