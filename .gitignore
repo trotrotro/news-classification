@@ -34,6 +34,7 @@ env/
 *.pkl
 *.joblib
 *.pickle
+*.onnx
 checkpoints/
 mlflow.db
 mlartifacts/

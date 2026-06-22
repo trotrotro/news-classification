@@ -4,6 +4,7 @@ import hydra
 import torch
 
 from news_classifier.data.data_module import NewsDataModule
+from news_classifier.deployment.download_onnx import download_onnx
 from news_classifier.models.lstm import LSTMClassifier
 
 

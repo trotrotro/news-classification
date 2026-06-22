@@ -7,6 +7,7 @@ defaults:
   - train: default
   - preprocess: text
   - infer: default
+  - onnx_config : default
   - _self_
 mlflow:
   tracking_uri: http://127.0.0.1:8080
