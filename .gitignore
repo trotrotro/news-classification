@@ -23,6 +23,7 @@ env/
 *.parquet
 *.jsonl
 *.tsv
+*.json
 
 # Модели и чекпоинты
 *.ckpt
@@ -34,7 +35,6 @@ env/
 *.joblib
 *.pickle
 checkpoints/
-artifacts/
 mlflow.db
 mlartifacts/
 1/
@@ -61,5 +61,5 @@ logs/
 mlflow.db
 mlruns/
 /1
-/artifacts
-/models
+
+check_validity.py

@@ -38,11 +38,7 @@ def predict_csv(
     preview["text"] = preview["text"].str.slice(0, 80).str.replace("\n", " ")
 
     print("\nFirst predictions:")
-    print(preview[["text", "prediction", "rubric"]].head(5))
-
-    accuracy = (predictions["prediction"] == predictions["rubric"]).mean()
-
-    print("Accuracy:", accuracy)
+    print(preview[["text", "prediction"]].head(5))
 
     output_path = Path(output_path)
 
