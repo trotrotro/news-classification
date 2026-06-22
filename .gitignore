@@ -19,7 +19,6 @@ env/
 .dvc/updates
 
 # Данные и датасеты
-data/
 *.csv
 *.parquet
 *.jsonl
@@ -63,3 +62,4 @@ mlflow.db
 mlruns/
 /1
 /artifacts
+/models
