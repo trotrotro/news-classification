@@ -22,8 +22,6 @@ def predict_single_text(
     prediction = predictor.predict_text(text)
 
     print()
-    print(f"Text:\n{text}")
-    print()
     print(f"Prediction: {prediction}")
 
 
@@ -33,13 +31,18 @@ def predict_csv(
     output_path: str,
 ) -> None:
     predictions = predictor.predict_file(input_path)
+    print(predictions["prediction"].value_counts())
 
     preview = predictions.copy()
 
     preview["text"] = preview["text"].str.slice(0, 80).str.replace("\n", " ")
 
     print("\nFirst predictions:")
-    print(preview[["text", "prediction"]].head(5))
+    print(preview[["text", "prediction", "rubric"]].head(5))
+
+    accuracy = (predictions["prediction"] == predictions["rubric"]).mean()
+
+    print("Accuracy:", accuracy)
 
     output_path = Path(output_path)
 

@@ -13,14 +13,15 @@ from pytorch_lightning.callbacks import (
 from pytorch_lightning.loggers import MLFlowLogger
 
 from news_classifier.data.data_module import NewsDataModule
-from news_classifier.data.download_data import download_data, ensure_data
+from news_classifier.data.download_data import download_data
+from news_classifier.data.ensure_data import ensure_data
 from news_classifier.models.lstm import LSTMClassifier
 
 
 @hydra.main(version_base=None, config_path="../config", config_name="config")
 def main(cfg):
 
-    ensure_data()
+    ensure_data(cfg)
 
     dm = NewsDataModule(cfg)
     dm.setup()

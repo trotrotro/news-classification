@@ -21,7 +21,11 @@ class LSTMClassifier(pl.LightningModule):
         self.save_hyperparameters(ignore=["class_weights"])
         self.lr = lr
 
-        self.embedding = nn.Embedding(vocab_size, embed_dim)
+        self.embedding = nn.Embedding(
+            vocab_size,
+            embed_dim,
+            padding_idx=0,
+        )
         self.embedding_dropout = nn.Dropout(0.2)
 
         self.lstm = nn.LSTM(
@@ -35,9 +39,16 @@ class LSTMClassifier(pl.LightningModule):
 
         lstm_out_dim = hidden_dim * 2
 
-        self.attention_gate = nn.Linear(lstm_out_dim, 1)
+        self.attention_gate = nn.Linear(
+            lstm_out_dim,
+            1,
+        )
 
-        self.fc = nn.Linear(lstm_out_dim, num_classes)
+        self.fc = nn.Linear(
+            lstm_out_dim,
+            num_classes,
+        )
+
         self.dropout = nn.Dropout(0.4)
 
         if class_weights is not None:
@@ -49,15 +60,20 @@ class LSTMClassifier(pl.LightningModule):
         self.acc = MulticlassAccuracy(num_classes=num_classes)
 
     def forward(self, x):
+        mask = (x != 0).unsqueeze(-1)
+
         x = self.embedding(x)
         x = self.embedding_dropout(x)
 
-        outputs, _ = self.lstm(x)  # (batch, seq, hidden*2)
+        outputs, _ = self.lstm(x)
 
-        weights = torch.sigmoid(self.attention_gate(outputs))  # (batch, seq, 1)
+        weights = torch.sigmoid(self.attention_gate(outputs))
+        weights = weights * mask
+
         context = (outputs * weights).sum(dim=1) / (weights.sum(dim=1) + 1e-8)
 
         context = self.dropout(context)
+
         logits = self.fc(context)
 
         return logits
