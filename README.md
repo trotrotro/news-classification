@@ -183,6 +183,40 @@ uv run python -m news_classifier.deployment.export_onnx
 
 Модель будет экспортирована в файл deployment/model.onnx
 
+## Inference server
+
+Выполняется с помощью MLflow Sreving. Если чекпоинт модели и артефакты уже скачаны, нужно при запущенном сервере выполнить:
+
+```
+uv run python -m news_classifier.deployment.register_mlflow_model
+```
+
+Далее запросы к модели должны иметь вид:
+
+```
+import requests
+
+payload = {
+    "dataframe_records": [
+        {
+            "text": "текст одной новости"
+        },
+        {
+            "text": "текст другой новости"
+        },
+    ]
+}
+
+r = requests.post(
+    "http://127.0.0.1:8080/invocations",
+    json=payload,
+)
+
+print(r.json())
+```
+
+
+
 
 
 
