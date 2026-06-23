@@ -38,6 +38,72 @@
 
 # Работа с проектом
 
+## Структура проекта
+
+```
+news-classification/
+├── artifacts/
+│   ├── idx2label.json
+│   ├── label2idx.json
+│   └── word2idx.json
+│
+├── config/
+│   ├── artifacts/
+│   ├── checkpoint/
+│   ├── data/
+│   ├── data_load/
+│   ├── infer/
+│   ├── model/
+│   ├── preprocess/
+│   ├── train/
+│   └── config.yaml
+│
+├── data/
+│   └── rus_news_data/
+│       ├── train.csv
+│       ├── val.csv
+│       └── test.csv
+│
+├── models/
+│   └── best.ckpt
+│
+├── news_classifier/
+│   ├── artifacts/
+│   │   ├── download_artifacts.py
+│   │   └── ensure_artifacts.py
+│   │
+│   ├── data/
+│   │   ├── data_module.py
+│   │   ├── dataset.py
+│   │   ├── download_data.py
+│   │   └── ensure_data.py
+│   │
+│   ├── deployment/
+│   │   ├── export_onnx.py
+│   │
+│   ├── models/
+│   │   ├── download_model.py
+│   │   ├── ensure_model.py
+│   │   └── lstm.py
+│   │
+│   ├── predict/
+│   │   └── predictor.py
+│   │
+│   ├── preprocessing/
+│   │   ├── preprocess.py
+│   │   └── vocabulary.py
+│   │
+│   ├── train.py
+│   │
+│   └── infer.py
+│
+├── notebooks/
+├── plots/
+├── README.md
+├── pyproject.toml
+└── uv.lock
+```
+
 ## Настройка
 
 1. Клонируйте репозиторий
